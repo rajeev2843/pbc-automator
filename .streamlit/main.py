@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
-from datetime import datetime, timedelta
+from datetime import datetime
 from database import *
 from gemini_ai import *
 from utils import *
@@ -13,7 +11,7 @@ init_database()
 
 # Page config
 st.set_page_config(
-    page_title="Smart Audit Room - PBC Automator",
+    page_title="Smart Audit Room",
     page_icon="📋",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -37,202 +35,147 @@ if 'current_page' not in st.session_state:
 # ============================================================================
 
 def show_landing_page():
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    
-    # Hero Section
+    # Clean Layout without Cards
     col1, col2 = st.columns([3, 2])
     
     with col1:
-        st.markdown('<h1 class="hero-title">Smart Audit Room</h1>', unsafe_allow_html=True)
-        st.markdown("""
-        <h2 style='color: #6B7280; font-weight: 400; margin-bottom: 30px;'>
-        Automate Your PBC Process with AI
-        </h2>
-        <p style='font-size: 18px; color: #4B5563; line-height: 1.8; margin-bottom: 30px;'>
-        Transform your audit workflow with intelligent document management. 
-        Generate comprehensive PBC lists from Trial Balance in seconds, 
-        track submissions in real-time, and verify documents with AI-powered analysis.
-        </p>
-        """, unsafe_allow_html=True)
+        st.markdown('<h1 style="font-size: 3.5rem; color: #4F46E5;">Smart Audit Room</h1>', unsafe_allow_html=True)
+        st.markdown("### Automate Your PBC Process with AI")
+        st.write("Transform your audit workflow. Generate PBC lists from Trial Balance instantly, track submissions, and verify documents with AI.")
         
-        col_btn1, col_btn2 = st.columns(2)
-        with col_btn1:
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        c1, c2 = st.columns(2)
+        with c1:
             if st.button("🚀 Get Started", key="hero_signup", use_container_width=True):
                 st.session_state.current_page = "signup"
                 st.rerun()
-        with col_btn2:
+        with c2:
             if st.button("🔐 Sign In", key="hero_signin", use_container_width=True):
                 st.session_state.current_page = "signin"
                 st.rerun()
     
     with col2:
-        st.markdown("""
-        <div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                    padding: 40px; border-radius: 20px; color: white; text-align: center;'>
-            <div style='font-size: 64px; margin-bottom: 20px;'>📋</div>
-            <h3 style='color: white; margin-bottom: 15px;'>Built for CAs</h3>
-            <p style='font-size: 16px; opacity: 0.95;'>
-            Designed specifically for Chartered Accountants and their clients 
-            to streamline the audit documentation process.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("</div>", unsafe_allow_html=True)
-    
-    # Features Section
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    
-    st.markdown("<h2 style='text-align: center; margin-bottom: 40px;'>🌟 Powerful Features</h2>", unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="icon-large">🤖</div>
-            <h3>AI-Powered PBC Generation</h3>
-            <p style='color: #6B7280; line-height: 1.6;'>
-            Upload Trial Balance and get a comprehensive, intelligent PBC list 
-            in seconds using Google Gemini AI.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="icon-large">📄</div>
-            <h3>Smart Document Analysis</h3>
-            <p style='color: #6B7280; line-height: 1.6;'>
-            AI automatically analyzes uploaded documents, extracts key information, 
-            and verifies completeness.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col3:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="icon-large">📊</div>
-            <h3>Real-time Tracking</h3>
-            <p style='color: #6B7280; line-height: 1.6;'>
-            Monitor progress with interactive dashboards. Track pending items, 
-            submissions, and verifications effortlessly.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("</div>", unsafe_allow_html=True)
+        st.info("**Designed for CAs**\n\nStreamline audit documentation and client communication in one secure platform.")
 
 # ============================================================================
 # AUTHENTICATION PAGES
 # ============================================================================
 
 def show_signup_page():
-    st.markdown('<div class="main-card" style="max-width: 600px;">', unsafe_allow_html=True)
-    st.markdown("<h2 style='text-align: center;'>Create Account</h2>", unsafe_allow_html=True)
-    
-    role = st.selectbox("I am a:", ["Chartered Accountant", "Client"])
-    role_enum = UserRole.CA if role == "Chartered Accountant" else UserRole.CLIENT
-    
-    full_name = st.text_input("Full Name")
-    email = st.text_input("Email Address")
-    password = st.text_input("Password", type="password")
-    confirm_pass = st.text_input("Confirm Password", type="password")
-    
-    if role_enum == UserRole.CA:
-        firm_name = st.text_input("Firm Name")
-        mem_no = st.text_input("Membership Number")
-    else:
-        company_name = st.text_input("Company Name")
-        gstin = st.text_input("GSTIN")
-        ca_code = st.text_input("CA Invite Code (Ask your CA)")
-    
-    if st.button("Sign Up", use_container_width=True):
-        if not email or not password or not full_name:
-            st.error("Please fill all required fields")
-        elif password != confirm_pass:
-            st.error("Passwords do not match")
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.markdown("## Create Account")
+        st.markdown("<div style='background: white; padding: 30px; border-radius: 12px; border: 1px solid #E2E8F0;'>", unsafe_allow_html=True)
+        
+        role = st.radio("I am a:", ["Chartered Accountant", "Client"], horizontal=True)
+        role_enum = UserRole.CA if role == "Chartered Accountant" else UserRole.CLIENT
+        
+        full_name = st.text_input("Full Name")
+        email = st.text_input("Email Address")
+        password = st.text_input("Password", type="password")
+        confirm_pass = st.text_input("Confirm Password", type="password")
+        
+        firm_name = None
+        mem_no = None
+        company_name = None
+        gstin = None
+        ca_code = None
+
+        if role_enum == UserRole.CA:
+            firm_name = st.text_input("Firm Name")
+            mem_no = st.text_input("Membership Number")
         else:
-            db = get_session()
-            try:
-                # Check existing
-                if db.query(User).filter(User.email == email).first():
-                    st.error("Email already registered")
-                else:
-                    user = User(
-                        email=email,
-                        password_hash=hash_password(password),
-                        full_name=full_name,
-                        role=role_enum,
-                        company_name=firm_name if role_enum == UserRole.CA else company_name
-                    )
-                    db.add(user)
-                    db.flush()
-                    
-                    if role_enum == UserRole.CA:
-                        profile = CAProfile(
-                            user_id=user.user_id,
-                            firm_name=firm_name,
-                            membership_no=mem_no,
-                            invite_code=generate_invite_code()
-                        )
-                        db.add(profile)
+            company_name = st.text_input("Company Name")
+            gstin = st.text_input("GSTIN")
+            ca_code = st.text_input("CA Invite Code (Ask your CA)")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        if st.button("Sign Up", use_container_width=True):
+            if not email or not password or not full_name:
+                st.error("Please fill all required fields")
+            elif password != confirm_pass:
+                st.error("Passwords do not match")
+            else:
+                db = get_session()
+                try:
+                    if db.query(User).filter(User.email == email).first():
+                        st.error("Email already registered")
                     else:
-                        # Link to CA via code
-                        ca_profile = db.query(CAProfile).filter(CAProfile.invite_code == ca_code).first()
-                        client_profile = ClientProfile(
-                            user_id=user.user_id,
-                            company_name=company_name,
-                            gstin=gstin,
-                            ca_id=ca_profile.ca_id if ca_profile else None
+                        user = User(
+                            email=email,
+                            password_hash=hash_password(password),
+                            full_name=full_name,
+                            role=role_enum,
+                            company_name=firm_name if role_enum == UserRole.CA else company_name
                         )
-                        db.add(client_profile)
+                        db.add(user)
+                        db.flush()
+                        
+                        if role_enum == UserRole.CA:
+                            profile = CAProfile(
+                                user_id=user.user_id,
+                                firm_name=firm_name,
+                                membership_no=mem_no,
+                                invite_code=generate_invite_code()
+                            )
+                            db.add(profile)
+                        else:
+                            ca_profile = db.query(CAProfile).filter(CAProfile.invite_code == ca_code).first()
+                            client_profile = ClientProfile(
+                                user_id=user.user_id,
+                                company_name=company_name,
+                                gstin=gstin,
+                                ca_id=ca_profile.ca_id if ca_profile else None
+                            )
+                            db.add(client_profile)
+                        
+                        db.commit()
+                        st.success("Account created! Please sign in.")
+                        st.session_state.current_page = "signin"
+                        st.rerun()
+                except Exception as e:
+                    st.error(f"Error: {str(e)}")
+                finally:
+                    db.close()
                     
-                    db.commit()
-                    st.success("Account created! Please sign in.")
-                    st.session_state.current_page = "signin"
-                    st.rerun()
-                    
-            except Exception as e:
-                st.error(f"Error: {str(e)}")
-            finally:
-                db.close()
-                
-    if st.button("Already have an account? Sign In", type="secondary", use_container_width=True):
-        st.session_state.current_page = "signin"
-        st.rerun()
-    
-    st.markdown("</div>", unsafe_allow_html=True)
+        if st.button("Already have an account? Sign In", type="secondary", use_container_width=True):
+            st.session_state.current_page = "signin"
+            st.rerun()
+            
+        st.markdown("</div>", unsafe_allow_html=True)
 
 def show_signin_page():
-    st.markdown('<div class="main-card" style="max-width: 500px;">', unsafe_allow_html=True)
-    st.markdown("<h2 style='text-align: center;'>Sign In</h2>", unsafe_allow_html=True)
-    
-    email = st.text_input("Email Address")
-    password = st.text_input("Password", type="password")
-    
-    if st.button("Sign In", use_container_width=True):
-        db = get_session()
-        user = db.query(User).filter(User.email == email).first()
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.markdown("## Sign In")
+        st.markdown("<div style='background: white; padding: 30px; border-radius: 12px; border: 1px solid #E2E8F0;'>", unsafe_allow_html=True)
         
-        if user and verify_password(password, user.password_hash):
-            login_user(user.user_id, user.role)
-            st.rerun()
-        else:
-            st.error("Invalid credentials")
-        db.close()
+        email = st.text_input("Email Address")
+        password = st.text_input("Password", type="password")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        if st.button("Sign In", use_container_width=True):
+            db = get_session()
+            user = db.query(User).filter(User.email == email).first()
             
-    if st.button("Don't have an account? Sign Up", type="secondary", use_container_width=True):
-        st.session_state.current_page = "signup"
-        st.rerun()
-    
-    st.markdown("</div>", unsafe_allow_html=True)
+            if user and verify_password(password, user.password_hash):
+                login_user(user.user_id, user.role)
+                st.rerun()
+            else:
+                st.error("Invalid credentials")
+            db.close()
+            
+        if st.button("Don't have an account? Sign Up", type="secondary", use_container_width=True):
+            st.session_state.current_page = "signup"
+            st.rerun()
+            
+        st.markdown("</div>", unsafe_allow_html=True)
 
 # ============================================================================
-# CA DASHBOARD & FEATURES
+# CA DASHBOARD
 # ============================================================================
 
 def show_ca_dashboard():
@@ -240,148 +183,129 @@ def show_ca_dashboard():
     user = db.query(User).filter(User.user_id == st.session_state.user_id).first()
     ca_profile = user.ca_profile
     
+    # Sidebar
     with st.sidebar:
-        st.title(f"👨‍💼 {user.full_name}")
+        st.markdown(f"### 👨‍💼 {user.full_name}")
         st.caption(f"{ca_profile.firm_name}")
         st.divider()
         
-        page = st.radio("Navigation", ["Dashboard", "My Clients", "Create Audit Project", "Review Documents"])
+        page = st.radio("Menu", ["Dashboard", "My Clients", "Start Audit", "Review Documents"])
         
         st.divider()
-        st.info(f"🔑 Invite Code: **{ca_profile.invite_code}**")
+        st.success(f"🔑 Invite Code:\n**{ca_profile.invite_code}**")
         if st.button("Logout"):
             logout_user()
 
     if page == "Dashboard":
-        st.markdown(f"# 👋 Welcome back, {user.full_name}")
+        st.title("Practice Overview")
         
-        # Stats
         clients_count = len(ca_profile.clients)
         projects = ca_profile.audit_projects
         pending_reviews = sum(1 for p in projects for item in p.pbc_items if item.status == PBCStatus.SUBMITTED)
         
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.markdown(f"""
-            <div class="metric-card">
-                <h3>Total Clients</h3>
-                <h1>{clients_count}</h1>
-            </div>
-            """, unsafe_allow_html=True)
-        with col2:
-            st.markdown(f"""
-            <div class="metric-card" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
-                <h3>Active Audits</h3>
-                <h1>{len(projects)}</h1>
-            </div>
-            """, unsafe_allow_html=True)
-        with col3:
-            st.markdown(f"""
-            <div class="metric-card" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
-                <h3>Pending Reviews</h3>
-                <h1>{pending_reviews}</h1>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        st.subheader("Recent Activity")
-        # Placeholder for activity feed
-        st.info("No recent activity")
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            st.markdown(f"<div class='metric-card'><h3>Clients</h3><h1>{clients_count}</h1></div>", unsafe_allow_html=True)
+        with c2:
+            st.markdown(f"<div class='metric-card'><h3>Active Audits</h3><h1>{len(projects)}</h1></div>", unsafe_allow_html=True)
+        with c3:
+            st.markdown(f"<div class='metric-card'><h3>Pending Reviews</h3><h1>{pending_reviews}</h1></div>", unsafe_allow_html=True)
 
-    elif page == "Create Audit Project":
-        st.markdown('<div class="main-card">', unsafe_allow_html=True)
-        st.subheader("🚀 Start New Audit")
+    elif page == "Start Audit":
+        st.title("🚀 Start New Audit")
+        st.markdown("Create a new audit project and generate PBC requirements automatically.")
         
-        clients = ca_profile.clients
-        if not clients:
-            st.warning("No clients found. Share your invite code to add clients.")
-        else:
-            client_opts = {c.company_name: c.client_id for c in clients}
-            selected_client = st.selectbox("Select Client", list(client_opts.keys()))
-            
-            proj_name = st.text_input("Project Name (e.g., Statutory Audit FY24-25)")
-            
-            uploaded_tb = st.file_uploader("Upload Trial Balance (Excel/CSV)", type=['xlsx', 'csv'])
-            
-            if st.button("Generate AI PBC List", use_container_width=True):
-                if uploaded_tb and proj_name:
-                    with st.spinner("🤖 AI is analyzing Trial Balance & generating PBC list..."):
-                        # Process TB
-                        if uploaded_tb.name.endswith('.csv'):
-                            df = pd.read_csv(uploaded_tb)
-                        else:
-                            df = pd.read_excel(uploaded_tb)
-                        
-                        # Save Project
-                        new_project = AuditProject(
-                            ca_id=ca_profile.ca_id,
-                            client_id=client_opts[selected_client],
-                            project_name=proj_name,
-                            financial_year="2024-25"
-                        )
-                        db.add(new_project)
-                        db.commit()
-                        
-                        # Call Gemini
-                        pbc_items = generate_pbc_from_trial_balance(df)
-                        
-                        # Save Items
-                        for idx, item in enumerate(pbc_items):
-                            new_item = PBCItem(
-                                project_id=new_project.project_id,
-                                item_number=idx+1,
-                                category=item['category'],
-                                item_description=item['description'],
-                                why_needed=item['why_needed'],
-                                priority=item['priority'],
-                                ai_generated=True
+        with st.container():
+            clients = ca_profile.clients
+            if not clients:
+                st.warning("No clients found. Share your invite code to add clients.")
+            else:
+                client_opts = {c.company_name: c.client_id for c in clients}
+                selected_client = st.selectbox("Select Client", list(client_opts.keys()))
+                
+                proj_name = st.text_input("Project Name", value="Statutory Audit FY 2024-25")
+                
+                st.markdown("### Upload Trial Balance")
+                
+                # --- SAMPLE FILE DOWNLOAD ---
+                sample_csv = "Account Name,Debit,Credit\nSales,0,500000\nRent Expense,12000,0\nSalary,50000,0\nBank HDFC,100000,0"
+                st.download_button(
+                    label="📥 Download Sample CSV Template",
+                    data=sample_csv,
+                    file_name="sample_trial_balance.csv",
+                    mime="text/csv"
+                )
+                # -----------------------------
+                
+                uploaded_tb = st.file_uploader("Drag and drop file here", type=['xlsx', 'csv'])
+                
+                if st.button("Generate AI PBC List", use_container_width=True):
+                    if uploaded_tb and proj_name:
+                        with st.spinner("🤖 AI is analyzing Trial Balance..."):
+                            if uploaded_tb.name.endswith('.csv'):
+                                df = pd.read_csv(uploaded_tb)
+                            else:
+                                df = pd.read_excel(uploaded_tb)
+                            
+                            new_project = AuditProject(
+                                ca_id=ca_profile.ca_id,
+                                client_id=client_opts[selected_client],
+                                project_name=proj_name,
+                                financial_year="2024-25"
                             )
-                            db.add(new_item)
-                        db.commit()
-                        
-                        st.success(f"Created project with {len(pbc_items)} AI-generated requirements!")
-                        
-        st.markdown("</div>", unsafe_allow_html=True)
-
+                            db.add(new_project)
+                            db.commit()
+                            
+                            pbc_items = generate_pbc_from_trial_balance(df)
+                            
+                            for idx, item in enumerate(pbc_items):
+                                new_item = PBCItem(
+                                    project_id=new_project.project_id,
+                                    item_number=idx+1,
+                                    category=item['category'],
+                                    item_description=item['description'],
+                                    why_needed=item['why_needed'],
+                                    priority=item['priority'],
+                                    ai_generated=True
+                                )
+                                db.add(new_item)
+                            db.commit()
+                            st.success(f"Audit created with {len(pbc_items)} AI-generated requirements!")
+    
     elif page == "Review Documents":
-        st.subheader("🔍 Document Review")
+        st.title("🔍 Document Review")
+        # (Existing Review Logic - Same as before)
         projects = ca_profile.audit_projects
         proj_opts = {p.project_name: p.project_id for p in projects}
-        
-        sel_proj = st.selectbox("Select Project", list(proj_opts.keys()))
+        sel_proj = st.selectbox("Select Audit Project", list(proj_opts.keys())) if proj_opts else None
         
         if sel_proj:
             proj = db.query(AuditProject).get(proj_opts[sel_proj])
-            
-            # Filter pending reviews
             pending_items = [item for item in proj.pbc_items if item.status == PBCStatus.SUBMITTED]
             
             if not pending_items:
-                st.success("No pending documents to review!")
+                st.success("All caught up! No pending reviews.")
             else:
                 for item in pending_items:
-                    with st.expander(f"{item.category}: {item.item_description}"):
-                        doc = item.documents[-1] # Get latest doc
-                        st.markdown(f"**Uploaded File:** {doc.filename}")
+                    with st.expander(f"📄 {item.category}: {item.item_description}"):
+                        doc = item.documents[-1]
+                        st.markdown(f"**File:** {doc.filename} | **Size:** {format_file_size(doc.file_size)}")
+                        st.info(f"**AI Analysis:**\n{doc.ai_analysis}")
                         
-                        col1, col2 = st.columns(2)
-                        with col1:
-                            st.info(f"🤖 **AI Analysis:**\n\n{doc.ai_analysis}")
-                        with col2:
-                            if st.button("✅ Approve", key=f"app_{doc.doc_id}"):
-                                item.status = PBCStatus.VERIFIED
-                                doc.is_verified = True
-                                db.commit()
-                                st.rerun()
-                            
-                            if st.button("❌ Reject", key=f"rej_{doc.doc_id}"):
-                                item.status = PBCStatus.REJECTED
-                                db.commit()
-                                st.rerun()
+                        c1, c2 = st.columns(2)
+                        if c1.button("✅ Approve", key=f"app_{doc.doc_id}"):
+                            item.status = PBCStatus.VERIFIED
+                            db.commit()
+                            st.rerun()
+                        if c2.button("❌ Reject", key=f"rej_{doc.doc_id}"):
+                            item.status = PBCStatus.REJECTED
+                            db.commit()
+                            st.rerun()
 
     db.close()
 
 # ============================================================================
-# CLIENT DASHBOARD & FEATURES
+# CLIENT DASHBOARD
 # ============================================================================
 
 def show_client_dashboard():
@@ -390,82 +314,54 @@ def show_client_dashboard():
     client_profile = user.client_profile
     
     with st.sidebar:
-        st.title(f"🏢 {user.company_name}")
+        st.markdown(f"### 🏢 {user.company_name}")
         if client_profile.linked_ca:
             st.caption(f"Auditor: {client_profile.linked_ca.firm_name}")
+        else:
+            st.warning("No Auditor Linked")
         st.divider()
-        
         if st.button("Logout"):
             logout_user()
 
-    # Main Area
-    st.markdown(f"## 📂 Audit Workspace")
-    
     projects = client_profile.audit_projects
     if not projects:
-        st.info("No active audits. Your CA will initiate a project.")
+        st.info("No active audits. Your CA will create a project.")
     else:
-        proj = projects[-1] # Latest project
-        st.markdown(f"### Current Audit: {proj.project_name}")
+        proj = projects[-1]
+        st.title(f"📂 {proj.project_name}")
         
-        # Metrics
         total = len(proj.pbc_items)
         completed = sum(1 for i in proj.pbc_items if i.status == PBCStatus.VERIFIED)
-        pending = total - completed
         progress = int((completed/total)*100) if total > 0 else 0
-        
         st.progress(progress)
-        st.caption(f"{progress}% Completed")
+        st.caption(f"Audit Progress: {progress}%")
         
-        # Filter
-        filter_status = st.selectbox("Filter Items", ["All", "Pending", "Submitted", "Verified", "Rejected"])
-        
+        filter_status = st.selectbox("Show Items", ["Pending", "Submitted", "Verified", "All"])
         items = proj.pbc_items
         if filter_status != "All":
             items = [i for i in items if i.status.value == filter_status]
-            
+        
         for item in items:
-            with st.expander(f"{status_badge(item.status.value)} {item.item_description}", expanded=(item.status == PBCStatus.PENDING)):
-                st.markdown(f"**Why Needed:** {item.why_needed}")
-                st.markdown(f"**Priority:** {priority_badge(item.priority)}", unsafe_allow_html=True)
-                
+            with st.expander(f"{item.item_description} {status_badge(item.status.value)}"):
+                st.write(f"**Reason:** {item.why_needed}")
                 if item.status in [PBCStatus.PENDING, PBCStatus.REJECTED]:
-                    uploaded_file = st.file_uploader(f"Upload Document for Item #{item.item_number}", key=f"up_{item.pbc_id}")
-                    
-                    if uploaded_file:
-                        if st.button("📤 Upload & Analyze", key=f"btn_{item.pbc_id}"):
-                            with st.spinner("🤖 AI is analyzing your document..."):
-                                # Save file metadata
-                                file_bytes = uploaded_file.read()
-                                
-                                # AI Analysis
-                                analysis = analyze_uploaded_document(file_bytes, uploaded_file.name, item.item_description)
-                                summary = analysis.get('summary', 'Analysis complete')
-                                
-                                new_doc = PBCDocument(
-                                    pbc_id=item.pbc_id,
-                                    filename=uploaded_file.name,
-                                    file_size=len(file_bytes),
-                                    file_type=uploaded_file.type,
-                                    uploaded_by=user.user_id,
-                                    ai_analysis=str(summary)
-                                )
-                                db.add(new_doc)
-                                item.status = PBCStatus.SUBMITTED
-                                db.commit()
-                                st.success("Document uploaded and analyzed!")
-                                st.rerun()
-                
-                elif item.status == PBCStatus.SUBMITTED:
-                    st.info("✅ Document uploaded. Waiting for CA review.")
-                    if item.documents:
-                        st.markdown(f"**AI Analysis:** {item.documents[-1].ai_analysis}")
-
+                    uf = st.file_uploader("Upload", key=f"up_{item.pbc_id}")
+                    if uf and st.button("Submit", key=f"sub_{item.pbc_id}"):
+                        # Document Upload Logic (Same as before)
+                        with st.spinner("AI Analyzing..."):
+                            bytes_data = uf.read()
+                            analysis = analyze_uploaded_document(bytes_data, uf.name, item.item_description)
+                            new_doc = PBCDocument(
+                                pbc_id=item.pbc_id, filename=uf.name, file_size=len(bytes_data),
+                                file_type=uf.type, uploaded_by=user.user_id,
+                                ai_analysis=str(analysis.get('summary', ''))
+                            )
+                            db.add(new_doc)
+                            item.status = PBCStatus.SUBMITTED
+                            db.commit()
+                            st.success("Uploaded!")
+                            st.rerun()
     db.close()
-
-# ============================================================================
-# MAIN ROUTER
-# ============================================================================
 
 def main():
     if not st.session_state.authenticated:
@@ -483,4 +379,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
     
