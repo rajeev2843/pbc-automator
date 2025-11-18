@@ -4,9 +4,18 @@ import PyPDF2
 import io
 from datetime import datetime, timedelta
 
+import streamlit as st
+import google.generativeai as genai
+import os
+
 # Configure Gemini API
-GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE"  # Get from https://makersuite.google.com/app/apikey
-genai.configure(api_key=GEMINI_API_KEY)
+# Try getting key from Streamlit secrets first, then environment variables
+if "GEMINI_API_KEY" in st.secrets:
+    api_key = st.secrets["GEMINI_API_KEY"]
+else:
+    api_key = os.getenv("GEMINI_API_KEY")
+
+genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-pro')
 
 def generate_pbc_from_trial_balance(tb_df, audit_type="Statutory Audit", financial_year="2024-25"):
