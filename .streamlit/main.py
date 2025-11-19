@@ -712,8 +712,8 @@ tb_file = st.file_uploader(
             help="Upload Trial Balance with columns: Account Name, Debit, Credit"
         )
         
-        st.markdown("<br>", unsafe_allow_html=True)
-        submit = st.form_submit_button("🚀 Create Project & Generate PBC", use_container_width=True)
+st.markdown("<br>", unsafe_allow_html=True)
+submit = st.form_submit_button("🚀 Create Project & Generate PBC", use_container_width=True)
         
         if submit:
             if not all([project_name, financial_year, tb_file]):
