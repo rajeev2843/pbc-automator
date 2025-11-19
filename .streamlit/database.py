@@ -38,6 +38,7 @@ class CAProfile(Base):
     user_id = Column(Integer, ForeignKey('users.user_id'), unique=True, nullable=False)
     firm_name = Column(String, nullable=False)
     membership_no = Column(String, unique=True, nullable=False)
+    firm_registration_no = Column(String, nullable=True)  # ← ADD THIS LINE
     invite_code = Column(String, unique=True, nullable=False)
     
     user = relationship("User", back_populates="ca_profile")
