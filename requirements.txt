@@ -6,6 +6,6 @@ google-generativeai
 PyPDF2
 python-dotenv
 bcrypt
-pillo
-streamlit-option-men
+pillow
+streamlit-option-menu
 plotly
