@@ -5,7 +5,7 @@ import io
 from datetime import datetime, timedelta
 
 # Configure Gemini API
-GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE"  # Get from https://makersuite.google.com/app/apikey
+GEMINI_API_KEY = "AIzaSyBxH6PDjSq1JhLYjlFOzf9jzOX45IIcCyk"  # Get from https://makersuite.google.com/app/apikey
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
 
