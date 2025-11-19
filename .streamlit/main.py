@@ -712,7 +712,15 @@ tb_file = st.file_uploader(
             help="Upload Trial Balance with columns: Account Name, Debit, Credit"
         )
         
-    st.markdown("<br>", unsafe_allow_html=True)
+    
+
+def show_ca_clients(db, ca_profile):
+    st.markdown('<div class="main-card">', unsafe_allow_html=True)
+    
+    st.markdown("# 👥 My Clients")
+    st.markdown("---")
+    
+    clients = db.query(ClientProfile).filter(st.markdown("<br>", unsafe_allow_html=True)
     submit = st.form_submit_button("🚀 Create Project & Generate PBC", use_container_width=True)
         
         if submit:
@@ -786,14 +794,7 @@ tb_file = st.file_uploader(
                     st.error(f"❌ Error: {str(e)}")
     
     st.markdown("</div>", unsafe_allow_html=True)
-
-def show_ca_clients(db, ca_profile):
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    
-    st.markdown("# 👥 My Clients")
-    st.markdown("---")
-    
-    clients = db.query(ClientProfile).filter(ClientProfile.ca_id == ca_profile.ca_id).all()
+    ClientProfile.ca_id == ca_profile.ca_id).all()
     
     # Invite code section
     st.markdown("### 🔗 Your Invite Code")
