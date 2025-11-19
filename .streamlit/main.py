@@ -842,7 +842,7 @@ def show_ca_clients(db, ca_profile):
                     for project in projects[:5]:
                         st.markdown(f"• **{project.project_name}** ({project.financial_year}) - {project.status}")
     
-    st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown("<br>", unsafe_allow_html=True)
 
 def show_ca_settings(db, ca_profile):
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
