@@ -844,34 +844,34 @@ def show_ca_settings(db, ca_profile):
         st.markdown("3. Copy and paste it below")
         
         with st.form("api_form"):
-    api_key = st.text_input("Gemini API Key", value="", type="password", placeholder="Enter your Gemini API key")
-    
-    if st.form_submit_button("💾 Save API Key"):
-        if api_key:
-            st.session_state.gemini_api_key = api_key
-            try:
-                import gemini_ai
-                gemini_ai.GEMINI_API_KEY = api_key
-                genai.configure(api_key=api_key)
-                st.success("✅ API Key saved!")
-            except Exception as e:
-                st.error(f"❌ Error saving API key: {str(e)}")
-        else:
-            st.warning("Please enter an API key")
+            api_key = st.text_input("Gemini API Key", value="", type="password", placeholder="Enter your Gemini API key")
+            
+            if st.form_submit_button("💾 Save API Key"):
+                if api_key:
+                    st.session_state.gemini_api_key = api_key
+                    try:
+                        import gemini_ai
+                        gemini_ai.GEMINI_API_KEY = api_key
+                        genai.configure(api_key=api_key)
+                        st.success("✅ API Key saved!")
+                    except Exception as e:
+                        st.error(f"❌ Error saving API key: {str(e)}")
+                else:
+                    st.warning("Please enter an API key")
         
         st.markdown("---")
         st.markdown("**Test API Connection:**")
-if st.button("🧪 Test Gemini API"):
-    if 'gemini_api_key' in st.session_state and st.session_state.gemini_api_key:
-        with st.spinner("Testing..."):
-            try:
-                test_model = genai.GenerativeModel('gemini-pro')
-                response = test_model.generate_content("Say 'Hello, API is working!'")
-                st.success(f"✅ API Working! Response: {response.text}")
-            except Exception as e:
-                st.error(f"❌ API Error: {str(e)}")
-    else:
-        st.warning("Please save your API key first")
+        if st.button("🧪 Test Gemini API"):
+            if 'gemini_api_key' in st.session_state and st.session_state.gemini_api_key:
+                with st.spinner("Testing..."):
+                    try:
+                        test_model = genai.GenerativeModel('gemini-pro')
+                        response = test_model.generate_content("Say 'Hello, API is working!'")
+                        st.success(f"✅ API Working! Response: {response.text}")
+                    except Exception as e:
+                        st.error(f"❌ API Error: {str(e)}")
+            else:
+                st.warning("Please save your API key first")
     
     st.markdown("</div>", unsafe_allow_html=True)
 
