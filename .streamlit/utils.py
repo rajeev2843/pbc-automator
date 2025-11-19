@@ -35,55 +35,139 @@ def apply_custom_styling():
             font-family: 'Inter', sans-serif !important;
         }
         
+        /* Main app background - dark navy blue */
         .main {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0A0E27 0%, #141B3D 100%);
             padding: 0;
         }
         
         .stApp {
-            background: transparent;
+            background: linear-gradient(135deg, #0A0E27 0%, #141B3D 100%);
         }
         
+        /* Sidebar - slightly lighter navy */
         [data-testid="stSidebar"] {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: #141B3D;
+            border-right: 1px solid #1E293B;
         }
         
+        [data-testid="stSidebar"] > div:first-child {
+            background: #141B3D;
+        }
+        
+        /* Hide sidebar collapse control text */
+        button[kind="header"] {
+            display: none;
+        }
+        
+        /* Sidebar text colors */
+        [data-testid="stSidebar"] * {
+            color: #E2E8F0 !important;
+        }
+        
+        [data-testid="stSidebar"] .stMarkdown {
+            color: #E2E8F0 !important;
+        }
+        
+        /* Remove radio button circles completely */
+        [data-testid="stSidebar"] .row-widget.stRadio > div {
+            gap: 4px;
+            flex-direction: column;
+        }
+        
+        [data-testid="stSidebar"] .row-widget.stRadio > div > label {
+            background: transparent !important;
+            padding: 12px 16px !important;
+            border-radius: 8px !important;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none !important;
+            font-weight: 500 !important;
+            margin-bottom: 4px;
+            display: flex !important;
+            align-items: center;
+        }
+        
+        /* Hide the radio circle completely */
+        [data-testid="stSidebar"] .row-widget.stRadio > div > label > div:first-child {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            margin: 0 !important;
+        }
+        
+        [data-testid="stSidebar"] .row-widget.stRadio > div > label:hover {
+            background: rgba(99, 102, 241, 0.15) !important;
+        }
+        
+        /* Active sidebar item - bold and underlined */
+        [data-testid="stSidebar"] .row-widget.stRadio > div > label[data-checked="true"] {
+            background: rgba(99, 102, 241, 0.25) !important;
+            font-weight: 700 !important;
+            border-left: 3px solid #6366F1 !important;
+        }
+        
+        [data-testid="stSidebar"] .row-widget.stRadio > div > label[data-checked="true"] p {
+            font-weight: 700 !important;
+            text-decoration: underline;
+            text-decoration-color: #6366F1;
+            text-decoration-thickness: 2px;
+        }
+        
+        /* Main content cards - dark with blue accents */
         .main-card {
-            background: white;
-            border-radius: 20px;
+            background: #141B3D;
+            border-radius: 16px;
             padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             margin: 20px auto;
             max-width: 1200px;
+            border: 1px solid #1E293B;
         }
         
+        /* All text should be light colored */
+        h1, h2, h3, h4, h5, h6 {
+            color: #E2E8F0 !important;
+        }
+        
+        p, span, div, label, li {
+            color: #CBD5E1 !important;
+        }
+        
+        /* Buttons - vibrant blue gradient */
         .stButton > button {
-            background: linear-gradient(90deg, #6366F1 0%, #8B5CF6 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 14px 28px;
-            font-weight: 600;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            background: linear-gradient(90deg, #6366F1 0%, #8B5CF6 100%) !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 12px !important;
+            padding: 14px 28px !important;
+            font-weight: 600 !important;
+            font-size: 16px !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4) !important;
         }
         
         .stButton > button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6) !important;
         }
         
+        /* Metric cards */
         .metric-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, #1E40AF 0%, #7C3AED 100%);
+            color: white !important;
             padding: 25px;
             border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
             margin-bottom: 20px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
         }
         
+        .metric-card * {
+            color: white !important;
+        }
+        
+        /* Status badges */
         .status-badge {
             padding: 6px 16px;
             border-radius: 20px;
@@ -94,33 +178,34 @@ def apply_custom_styling():
         
         .status-pending {
             background: #FEF3C7;
-            color: #92400E;
+            color: #92400E !important;
         }
         
         .status-progress {
             background: #DBEAFE;
-            color: #1E40AF;
+            color: #1E40AF !important;
         }
         
         .status-submitted {
             background: #D1FAE5;
-            color: #065F46;
+            color: #065F46 !important;
         }
         
         .status-verified {
             background: #D1FAE5;
-            color: #065F46;
+            color: #065F46 !important;
             border: 2px solid #10B981;
         }
         
         .status-rejected {
             background: #FEE2E2;
-            color: #991B1B;
+            color: #991B1B !important;
         }
         
+        /* PBC item cards */
         .pbc-item-card {
-            background: white;
-            border: 2px solid #E5E7EB;
+            background: #1E293B;
+            border: 2px solid #334155;
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 15px;
@@ -129,74 +214,144 @@ def apply_custom_styling():
         
         .pbc-item-card:hover {
             border-color: #6366F1;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+        
+        .pbc-item-card h3 {
+            color: #E2E8F0 !important;
+            margin-bottom: 10px;
+        }
+        
+        .pbc-item-card p {
+            color: #CBD5E1 !important;
         }
         
         .priority-high {
-            border-left: 5px solid #EF4444;
+            border-left: 5px solid #EF4444 !important;
         }
         
         .priority-medium {
-            border-left: 5px solid #F59E0B;
+            border-left: 5px solid #F59E0B !important;
         }
         
         .priority-low {
-            border-left: 5px solid #10B981;
+            border-left: 5px solid #10B981 !important;
         }
         
+        /* Input fields - dark with blue focus */
         .stTextInput > div > div > input,
-        .stTextArea textarea,
-        .stSelectbox > div > div {
-            border-radius: 10px;
-            border: 2px solid #E5E7EB;
-            padding: 12px;
-            font-size: 15px;
+        .stTextArea textarea {
+            background: #1E293B !important;
+            color: #E2E8F0 !important;
+            border-radius: 10px !important;
+            border: 2px solid #334155 !important;
+            padding: 12px !important;
+            font-size: 15px !important;
+        }
+        
+        .stTextInput > div > div > input::placeholder,
+        .stTextArea textarea::placeholder {
+            color: #64748B !important;
         }
         
         .stTextInput > div > div > input:focus,
         .stTextArea textarea:focus {
-            border-color: #6366F1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            border-color: #6366F1 !important;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+            outline: none !important;
         }
         
+        /* Select boxes */
+        .stSelectbox > div > div {
+            background: #1E293B !important;
+            color: #E2E8F0 !important;
+            border-radius: 10px !important;
+            border: 2px solid #334155 !important;
+        }
+        
+        .stSelectbox [data-baseweb="select"] > div {
+            background: #1E293B !important;
+            color: #E2E8F0 !important;
+            border-color: #334155 !important;
+        }
+        
+        .stSelectbox [data-baseweb="select"] > div:hover {
+            border-color: #6366F1 !important;
+        }
+        
+        /* Dropdown menu */
+        [data-baseweb="popover"] {
+            background: #1E293B !important;
+        }
+        
+        [data-baseweb="menu"] {
+            background: #1E293B !important;
+            border: 1px solid #334155 !important;
+        }
+        
+        [role="option"] {
+            background: #1E293B !important;
+            color: #E2E8F0 !important;
+            padding: 12px !important;
+        }
+        
+        [role="option"]:hover {
+            background: #334155 !important;
+        }
+        
+        [aria-selected="true"] {
+            background: #475569 !important;
+            color: #E2E8F0 !important;
+        }
+        
+        /* Upload zone */
         .upload-zone {
             border: 3px dashed #6366F1;
             border-radius: 15px;
             padding: 40px;
             text-align: center;
-            background: #F9FAFB;
+            background: #1E293B;
             transition: all 0.3s ease;
         }
         
         .upload-zone:hover {
-            background: #F3F4F6;
+            background: #334155;
             border-color: #8B5CF6;
         }
         
-        h1, h2, h3 {
-            color: #1F2937;
-        }
-        
+        /* Hero title gradient */
         .hero-title {
             font-size: 48px;
             font-weight: 700;
             background: linear-gradient(90deg, #6366F1, #8B5CF6, #EC4899);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 20px;
         }
         
+        /* Feature cards */
         .feature-card {
-            background: white;
+            background: #1E293B;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             text-align: center;
             transition: transform 0.3s ease;
+            border: 1px solid #334155;
         }
         
         .feature-card:hover {
             transform: translateY(-5px);
+            border-color: #6366F1;
+        }
+        
+        .feature-card h3 {
+            color: #E2E8F0 !important;
+        }
+        
+        .feature-card p {
+            color: #94A3B8 !important;
         }
         
         .icon-large {
@@ -204,27 +359,156 @@ def apply_custom_styling():
             margin-bottom: 15px;
         }
         
+        /* Hide Streamlit branding */
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
+        header {visibility: hidden;}
         
+        /* Progress bars */
         .stProgress > div > div > div > div {
-            background: linear-gradient(90deg, #6366F1, #8B5CF6);
+            background: linear-gradient(90deg, #6366F1, #8B5CF6) !important;
         }
         
-        .doc-preview {
-            background: #F9FAFB;
-            border: 1px solid #E5E7EB;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 10px 0;
+        /* Expanders */
+        .streamlit-expanderHeader {
+            background: #1E293B !important;
+            border-radius: 8px !important;
+            color: #E2E8F0 !important;
+            border: 1px solid #334155 !important;
         }
         
+        .streamlit-expanderHeader:hover {
+            border-color: #6366F1 !important;
+        }
+        
+        .streamlit-expanderContent {
+            background: #1E293B !important;
+            border: 1px solid #334155 !important;
+            border-top: none !important;
+        }
+        
+        /* Tabs */
+        .stTabs [data-baseweb="tab-list"] {
+            background: #1E293B;
+            border-radius: 8px;
+            padding: 4px;
+            gap: 4px;
+        }
+        
+        .stTabs [data-baseweb="tab"] {
+            background: transparent;
+            color: #94A3B8 !important;
+            border-radius: 6px;
+            padding: 12px 24px;
+            font-weight: 500;
+            border: none;
+        }
+        
+        .stTabs [data-baseweb="tab"]:hover {
+            background: #334155;
+            color: #E2E8F0 !important;
+        }
+        
+        .stTabs [aria-selected="true"] {
+            background: linear-gradient(90deg, #6366F1, #8B5CF6) !important;
+            color: white !important;
+        }
+        
+        /* AI analysis box */
         .ai-analysis-box {
-            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
-            border-left: 4px solid #6366F1;
+            background: linear-gradient(135deg, #1E3A8A 0%, #6366F1 100%);
+            border-left: 4px solid #8B5CF6;
             padding: 20px;
             border-radius: 10px;
             margin: 15px 0;
+        }
+        
+        .ai-analysis-box * {
+            color: white !important;
+        }
+        
+        /* Divider */
+        hr {
+            border-color: #334155 !important;
+            margin: 20px 0;
+        }
+        
+        /* File uploader */
+        [data-testid="stFileUploader"] {
+            background: #1E293B;
+            border: 2px dashed #6366F1;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        [data-testid="stFileUploader"] label {
+            color: #E2E8F0 !important;
+        }
+        
+        [data-testid="stFileUploader"] section {
+            border: none !important;
+        }
+        
+        /* Code blocks */
+        code {
+            background: #1E293B !important;
+            color: #6366F1 !important;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #334155;
+        }
+        
+        pre {
+            background: #1E293B !important;
+            border: 1px solid #334155 !important;
+            border-radius: 8px;
+        }
+        
+        /* Success/Error/Warning/Info messages */
+        .stSuccess {
+            background: #1E293B !important;
+            border-left: 4px solid #10B981 !important;
+            color: #E2E8F0 !important;
+        }
+        
+        .stError {
+            background: #1E293B !important;
+            border-left: 4px solid #EF4444 !important;
+            color: #E2E8F0 !important;
+        }
+        
+        .stWarning {
+            background: #1E293B !important;
+            border-left: 4px solid #F59E0B !important;
+            color: #E2E8F0 !important;
+        }
+        
+        .stInfo {
+            background: #1E293B !important;
+            border-left: 4px solid #6366F1 !important;
+            color: #E2E8F0 !important;
+        }
+        
+        /* Radio buttons in forms */
+        .row-widget.stRadio > div {
+            flex-direction: row !important;
+            gap: 20px;
+        }
+        
+        .row-widget.stRadio > div > label {
+            background: #1E293B !important;
+            padding: 12px 20px !important;
+            border-radius: 8px !important;
+            border: 2px solid #334155 !important;
+        }
+        
+        .row-widget.stRadio > div > label:hover {
+            border-color: #6366F1 !important;
+        }
+        
+        .row-widget.stRadio > div > label[data-checked="true"] {
+            border-color: #6366F1 !important;
+            background: rgba(99, 102, 241, 0.2) !important;
         }
         
         </style>
