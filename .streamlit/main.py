@@ -270,11 +270,13 @@ def show_signup_page():
                 st.markdown("**CA Details**")
                 firm_name = st.text_input("Firm Name *", placeholder="e.g., ABC & Associates")
                 membership_no = st.text_input("ICAI Membership Number *", placeholder="e.g., 123456")
+                firm_registration_no = st.text_input("Firm Registration Number (Optional)", placeholder="e.g., 123456W")  # ← ADD THIS LINE
                 company_name = None
                 gstin = None
             else:
                 firm_name = None
                 membership_no = None
+                firm_registration_no = None
                 st.markdown("<br>", unsafe_allow_html=True)
                 st.markdown("**Company Details**")
                 company_name = st.text_input("Company Name *", placeholder="Your company name")
@@ -321,6 +323,7 @@ def show_signup_page():
                                     user_id=new_user.user_id,
                                     firm_name=firm_name,
                                     membership_no=membership_no,
+                                    firm_registration_no=firm_registration_no if firm_registration_no else None,
                                     invite_code=generate_invite_code()
                                 )
                                 db.add(ca_profile)
@@ -441,16 +444,25 @@ def show_ca_dashboard():
     
     # Sidebar
     with st.sidebar:
-        st.markdown(f"### 👨‍💼 {user.full_name}")
-        st.markdown(f"**{ca_profile.firm_name}**")
-        st.markdown(f"Membership: {ca_profile.membership_no}")
-        st.divider()
-        
-        menu = st.radio(
-            "Navigation",
-            ["📊 Dashboard", "📁 Projects", "➕ New Project", "👥 Clients", "⚙️ Settings"],
-            label_visibility="collapsed"
-        )
+    st.markdown(f"### 👨‍💼 {user.full_name}")
+    st.markdown(f"**{ca_profile.firm_name}**")
+    st.markdown(f"**ICAI Membership:** {ca_profile.membership_no}")
+    if hasattr(ca_profile, 'firm_registration_no') and ca_profile.firm_registration_no:
+        st.markdown(f"**Firm Registration:** {ca_profile.firm_registration_no}")
+    
+    # Invite Code in sidebar
+    with st.expander("🔗 Your Invite Code"):
+        st.code(ca_profile.invite_code, language=None)
+        if st.button("📋 Copy Code", key="copy_invite_sidebar", use_container_width=True):
+            st.toast("✅ Copied to clipboard!")
+    
+    st.divider()
+    
+    menu = st.radio(
+        "Navigation",
+        ["📊 Dashboard", "📁 Projects", "➕ New Project", "👥 My Clients", "⚙️ Settings"],
+        label_visibility="collapsed"
+    )
         
         st.divider()
         if st.button("🚪 Logout", use_container_width=True):
@@ -463,7 +475,7 @@ def show_ca_dashboard():
         show_ca_projects(db, ca_profile)
     elif menu == "➕ New Project":
         show_ca_new_project(db, ca_profile)
-    elif menu == "👥 Clients":
+    elif menu == "👥 My Clients":
         show_ca_clients(db, ca_profile)
     elif menu == "⚙️ Settings":
         show_ca_settings(db, ca_profile)
@@ -650,10 +662,51 @@ def show_ca_new_project(db, ca_profile):
             financial_year = st.text_input("Financial Year *", placeholder="e.g., 2024-25")
         
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("### 📊 Upload Trial Balance")
-        st.markdown("Upload Trial Balance to auto-generate PBC list using AI")
-        
-        tb_file = st.file_uploader(
+st.markdown("### 📊 Upload Trial Balance")
+
+# ADD THIS SECTION:
+col_info1, col_info2 = st.columns([3, 1])
+with col_info1:
+    st.markdown("Upload Trial Balance to auto-generate PBC list using AI")
+with col_info2:
+    # Create sample file
+    sample_df = pd.DataFrame({
+        'Account Name': ['Cash in Hand', 'Bank - SBI', 'Sales Revenue', 'Rent Expense', 'Trade Payables'],
+        'Debit': [50000, 250000, 0, 35000, 0],
+        'Credit': [0, 0, 500000, 0, 75000]
+    })
+    
+    # CSV download
+    csv = sample_df.to_csv(index=False)
+    st.download_button(
+        label="📥 Sample CSV",
+        data=csv,
+        file_name="sample_trial_balance.csv",
+        mime="text/csv",
+        use_container_width=True,
+        key="download_sample_csv"
+    )
+
+# Excel download
+try:
+    from io import BytesIO
+    buffer = BytesIO()
+    with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
+        sample_df.to_excel(writer, index=False, sheet_name='Trial Balance')
+    excel_data = buffer.getvalue()
+    
+    st.download_button(
+        label="📥 Sample Excel",
+        data=excel_data,
+        file_name="sample_trial_balance.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        use_container_width=True,
+        key="download_sample_excel"
+    )
+except:
+    pass  # If openpyxl not available, skip Excel download
+
+tb_file = st.file_uploader(
             "Trial Balance (Excel/CSV)",
             type=['xlsx', 'xls', 'csv'],
             help="Upload Trial Balance with columns: Account Name, Debit, Credit"
@@ -759,30 +812,37 @@ def show_ca_clients(db, ca_profile):
     if not clients:
         st.info("No clients yet. Share your invite code to get started!")
     else:
+        ```python
         for client in clients:
             user = db.query(User).filter(User.user_id == client.user_id).first()
             projects = db.query(AuditProject).filter(AuditProject.client_id == client.client_id).all()
-            
-            with st.expander(f"🏢 {client.company_name}"):
-                col1, col2 = st.columns(2)
-                
-                with col1:
-                    st.markdown(f"**Contact:** {user.full_name if user else 'N/A'}")
-                    st.markdown(f"**Email:** {user.email if user else 'N/A'}")
-                    st.markdown(f"**GSTIN:** {client.gstin or 'Not provided'}")
-                
-                with col2:
-                    st.markdown(f"**Total Projects:** {len(projects)}")
-                    active_projects = [p for p in projects if p.status == "Active"]
-                    st.markdown(f"**Active Projects:** {len(active_projects)}")
-                    st.markdown(f"**Joined:** {user.created_at.strftime('%d %b %Y') if user else 'N/A'}")
-                
-                if projects:
-                    st.markdown("**Recent Projects:**")
-                    for project in projects[:3]:
-                        st.markdown(f"- {project.project_name} ({project.financial_year})")
     
-    st.markdown("</div>", unsafe_allow_html=True)
+            # Use container instead of expander to avoid text overlap
+            st.markdown(f"""
+            <div class="pbc-item-card">
+                <h3>🏢 {client.company_name}</h3>
+            </div>
+            """, unsafe_allow_html=True)
+     
+            col1, col2 = st.columns(2)
+    
+            with col1:
+                st.markdown(f"**Contact:** {user.full_name if user else 'N/A'}")
+                st.markdown(f"**Email:** {user.email if user else 'N/A'}")
+                st.markdown(f"**GSTIN:** {client.gstin or 'Not provided'}")
+    
+            with col2:
+                st.markdown(f"**Total Projects:** {len(projects)}")
+                active_projects = [p for p in projects if p.status == "Active"]
+                st.markdown(f"**Active Projects:** {len(active_projects)}")
+                st.markdown(f"**Joined:** {user.created_at.strftime('%d %b %Y') if user else 'N/A'}")
+    
+            if projects:
+                with st.expander("📂 View Recent Projects"):
+                    for project in projects[:5]:
+                        st.markdown(f"• **{project.project_name}** ({project.financial_year}) - {project.status}")
+    
+    st.markdown("<br>", unsafe_allow_html=True)
 
 def show_ca_settings(db, ca_profile):
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -792,7 +852,7 @@ def show_ca_settings(db, ca_profile):
     
     user = db.query(User).filter(User.user_id == st.session_state.user_id).first()
     
-    tab1, tab2, tab3 = st.tabs(["Profile", "Security", "API Configuration"])
+    tab1, tab2 = st.tabs(["Profile", "Security"])
     
     with tab1:
         st.markdown("### 👤 Profile Information")
@@ -833,45 +893,6 @@ def show_ca_settings(db, ca_profile):
                     except Exception as e:
                         db.rollback()
                         st.error(f"❌ Error: {str(e)}")
-    
-    with tab3:
-        st.markdown("### 🤖 Gemini AI Configuration")
-        st.info("To use AI-powered PBC generation, you need a Google Gemini API key.")
-        
-        st.markdown("**How to get your API key:**")
-        st.markdown("1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)")
-        st.markdown("2. Click 'Create API Key'")
-        st.markdown("3. Copy and paste it below")
-        
-        with st.form("api_form"):
-            api_key = st.text_input("Gemini API Key", value="", type="password", placeholder="Enter your Gemini API key")
-            
-            if st.form_submit_button("💾 Save API Key"):
-                if api_key:
-                    st.session_state.gemini_api_key = api_key
-                    try:
-                        import gemini_ai
-                        gemini_ai.GEMINI_API_KEY = api_key
-                        genai.configure(api_key=api_key)
-                        st.success("✅ API Key saved!")
-                    except Exception as e:
-                        st.error(f"❌ Error saving API key: {str(e)}")
-                else:
-                    st.warning("Please enter an API key")
-        
-        st.markdown("---")
-        st.markdown("**Test API Connection:**")
-        if st.button("🧪 Test Gemini API"):
-            if 'gemini_api_key' in st.session_state and st.session_state.gemini_api_key:
-                with st.spinner("Testing..."):
-                    try:
-                        test_model = genai.GenerativeModel('gemini-pro')
-                        response = test_model.generate_content("Say 'Hello, API is working!'")
-                        st.success(f"✅ API Working! Response: {response.text}")
-                    except Exception as e:
-                        st.error(f"❌ API Error: {str(e)}")
-            else:
-                st.warning("Please save your API key first")
     
     st.markdown("</div>", unsafe_allow_html=True)
 
