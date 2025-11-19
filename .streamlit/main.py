@@ -464,9 +464,9 @@ def show_ca_dashboard():
         label_visibility="collapsed"
     )
         
-        st.divider()
-        if st.button("🚪 Logout", use_container_width=True):
-            logout_user()
+    st.divider()
+    if st.button("🚪 Logout", use_container_width=True):
+        logout_user()
     
     # Main content based on menu
     if menu == "📊 Dashboard":
