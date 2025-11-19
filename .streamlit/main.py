@@ -444,9 +444,9 @@ def show_ca_dashboard():
     
     # Sidebar
     with st.sidebar:
-    st.markdown(f"### 👨‍💼 {user.full_name}")
-    st.markdown(f"**{ca_profile.firm_name}**")
-    st.markdown(f"**ICAI Membership:** {ca_profile.membership_no}")
+        st.markdown(f"### 👨‍💼 {user.full_name}")
+        st.markdown(f"**{ca_profile.firm_name}**")
+        st.markdown(f"**ICAI Membership:** {ca_profile.membership_no}")
     if hasattr(ca_profile, 'firm_registration_no') and ca_profile.firm_registration_no:
         st.markdown(f"**Firm Registration:** {ca_profile.firm_registration_no}")
     
