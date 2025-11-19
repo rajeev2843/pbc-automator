@@ -1,11 +1,12 @@
 import google.generativeai as genai
+import streamlit as st
 import pandas as pd
 import PyPDF2
 import io
 from datetime import datetime, timedelta
 
 # Configure Gemini API
-GEMINI_API_KEY = "AIzaSyBxH6PDjSq1JhLYjlFOzf9jzOX45IIcCyk"  # Get from https://makersuite.google.com/app/apikey
+GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "AIzaSyBxH6PDjSq1JhLYjlFOzf9jzOX45IIcCyk")
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
 
