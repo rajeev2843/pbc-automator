@@ -445,8 +445,8 @@ def show_ca_dashboard():
     
     # Sidebar
     with st.sidebar:
-        st.markdown(f"### 👨‍💼 {user.full_name}")
-        st.markdown(f"**{ca_profile.firm_name}**")
+        st.markdown(f"<h3 style='color: #E2E8F0;'>👨‍💼 {user.full_name}</h3>", unsafe_allow_html=True)
+        st.markdown(f"<p style='color: #E2E8F0; font-weight: 700; font-size: 16px;'>{ca_profile.firm_name}</p>", unsafe_allow_html=True)
         st.markdown(f"**ICAI Membership:** {ca_profile.membership_no}")
         if hasattr(ca_profile, 'firm_registration_no') and ca_profile.firm_registration_no:
             st.markdown(f"**Firm Registration:** {ca_profile.firm_registration_no}")
@@ -642,8 +642,6 @@ def show_ca_new_project(db, ca_profile):
     
     if not clients:
         st.warning("⚠️ You don't have any clients yet. Clients must sign up and link to your firm using your invite code.")
-        st.info(f"**Your Invite Code:** `{ca_profile.invite_code}`")
-        st.markdown("Share this code with your clients during their signup process.")
         st.markdown("</div>", unsafe_allow_html=True)
         return
     
@@ -795,18 +793,6 @@ def show_ca_clients(db, ca_profile):
     
     clients = db.query(ClientProfile).filter(ClientProfile.ca_id == ca_profile.ca_id).all()
     
-    # Invite code section
-    st.markdown("### 🔗 Your Invite Code")
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        st.code(ca_profile.invite_code, language=None)
-    with col2:
-        if st.button("📋 Copy", use_container_width=True):
-            st.success("Copied to clipboard!")
-    
-    st.info("Share this code with clients during their signup. They'll be automatically linked to your firm.")
-    
-    st.markdown("---")
     st.markdown(f"### 📊 Total Clients: {len(clients)}")
     
     if not clients:
