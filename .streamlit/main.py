@@ -8,6 +8,7 @@ from gemini_ai import *
 from utils import *
 import io
 import json
+from io import BytesIO
 
 # Initialize database
 init_database()
@@ -270,7 +271,7 @@ def show_signup_page():
                 st.markdown("**CA Details**")
                 firm_name = st.text_input("Firm Name *", placeholder="e.g., ABC & Associates")
                 membership_no = st.text_input("ICAI Membership Number *", placeholder="e.g., 123456")
-                firm_registration_no = st.text_input("Firm Registration Number (Optional)", placeholder="e.g., 123456W")  # ← ADD THIS LINE
+                firm_registration_no = st.text_input("Firm Registration Number (Optional)", placeholder="e.g., 123456W")
                 company_name = None
                 gstin = None
             else:
@@ -447,26 +448,26 @@ def show_ca_dashboard():
         st.markdown(f"### 👨‍💼 {user.full_name}")
         st.markdown(f"**{ca_profile.firm_name}**")
         st.markdown(f"**ICAI Membership:** {ca_profile.membership_no}")
-    if hasattr(ca_profile, 'firm_registration_no') and ca_profile.firm_registration_no:
-        st.markdown(f"**Firm Registration:** {ca_profile.firm_registration_no}")
-    
-    # Invite Code in sidebar
-    with st.expander("🔗 Your Invite Code"):
-        st.code(ca_profile.invite_code, language=None)
-        if st.button("📋 Copy Code", key="copy_invite_sidebar", use_container_width=True):
-            st.toast("✅ Copied to clipboard!")
-    
-    st.divider()
-    
-    menu = st.radio(
-        "Navigation",
-        ["📊 Dashboard", "📁 Projects", "➕ New Project", "👥 My Clients", "⚙️ Settings"],
-        label_visibility="collapsed"
-    )
+        if hasattr(ca_profile, 'firm_registration_no') and ca_profile.firm_registration_no:
+            st.markdown(f"**Firm Registration:** {ca_profile.firm_registration_no}")
         
-    st.divider()
-    if st.button("🚪 Logout", use_container_width=True):
-        logout_user()
+        # Invite Code in sidebar
+        with st.expander("🔗 Your Invite Code"):
+            st.code(ca_profile.invite_code, language=None)
+            if st.button("📋 Copy Code", key="copy_invite_sidebar", use_container_width=True):
+                st.toast("✅ Copied to clipboard!")
+        
+        st.divider()
+        
+        menu = st.radio(
+            "Navigation",
+            ["📊 Dashboard", "📁 Projects", "➕ New Project", "👥 My Clients", "⚙️ Settings"],
+            label_visibility="collapsed"
+        )
+            
+        st.divider()
+        if st.button("🚪 Logout", use_container_width=True):
+            logout_user()
     
     # Main content based on menu
     if menu == "📊 Dashboard":
@@ -662,66 +663,57 @@ def show_ca_new_project(db, ca_profile):
             financial_year = st.text_input("Financial Year *", placeholder="e.g., 2024-25")
         
         st.markdown("<br>", unsafe_allow_html=True)
-st.markdown("### 📊 Upload Trial Balance")
-
-# ADD THIS SECTION:
-col_info1, col_info2 = st.columns([3, 1])
-with col_info1:
-    st.markdown("Upload Trial Balance to auto-generate PBC list using AI")
-with col_info2:
-    # Create sample file
-    sample_df = pd.DataFrame({
-        'Account Name': ['Cash in Hand', 'Bank - SBI', 'Sales Revenue', 'Rent Expense', 'Trade Payables'],
-        'Debit': [50000, 250000, 0, 35000, 0],
-        'Credit': [0, 0, 500000, 0, 75000]
-    })
-    
-    # CSV download
-    csv = sample_df.to_csv(index=False)
-    st.download_button(
-        label="📥 Sample CSV",
-        data=csv,
-        file_name="sample_trial_balance.csv",
-        mime="text/csv",
-        use_container_width=True,
-        key="download_sample_csv"
-    )
-
-# Excel download
-try:
-    from io import BytesIO
-    buffer = BytesIO()
-    with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
-        sample_df.to_excel(writer, index=False, sheet_name='Trial Balance')
-    excel_data = buffer.getvalue()
-    
-    st.download_button(
-        label="📥 Sample Excel",
-        data=excel_data,
-        file_name="sample_trial_balance.xlsx",
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        use_container_width=True,
-        key="download_sample_excel"
-    )
-except:
-    pass  # If openpyxl not available, skip Excel download
-
-tb_file = st.file_uploader(
+        st.markdown("### 📊 Upload Trial Balance")
+        
+        # Sample file downloads
+        col_info1, col_info2 = st.columns([2, 2])
+        with col_info1:
+            st.markdown("Upload Trial Balance to auto-generate PBC list using AI")
+        with col_info2:
+            # Create sample file
+            sample_df = pd.DataFrame({
+                'Account Name': ['Cash in Hand', 'Bank - SBI', 'Sales Revenue', 'Rent Expense', 'Trade Payables'],
+                'Debit': [50000, 250000, 0, 35000, 0],
+                'Credit': [0, 0, 500000, 0, 75000]
+            })
+            
+            # CSV download
+            csv = sample_df.to_csv(index=False)
+            st.download_button(
+                label="📥 Sample CSV",
+                data=csv,
+                file_name="sample_trial_balance.csv",
+                mime="text/csv",
+                use_container_width=True,
+                key="download_sample_csv"
+            )
+            
+            # Excel download
+            try:
+                buffer = BytesIO()
+                with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
+                    sample_df.to_excel(writer, index=False, sheet_name='Trial Balance')
+                excel_data = buffer.getvalue()
+                
+                st.download_button(
+                    label="📥 Sample Excel",
+                    data=excel_data,
+                    file_name="sample_trial_balance.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    use_container_width=True,
+                    key="download_sample_excel"
+                )
+            except:
+                pass
+        
+        tb_file = st.file_uploader(
             "Trial Balance (Excel/CSV)",
             type=['xlsx', 'xls', 'csv'],
             help="Upload Trial Balance with columns: Account Name, Debit, Credit"
         )
         
-    
-
-def show_ca_clients(db, ca_profile):
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    
-    st.markdown("# 👥 My Clients")
-    st.markdown("---")
-    
-    clients = db.query(ClientProfile).filter(st.markdown("<br>", unsafe_allow_html=True)
-    submit = st.form_submit_button("🚀 Create Project & Generate PBC", use_container_width=True)
+        st.markdown("<br>", unsafe_allow_html=True)
+        submit = st.form_submit_button("🚀 Create Project & Generate PBC", use_container_width=True)
         
         if submit:
             if not all([project_name, financial_year, tb_file]):
@@ -794,7 +786,14 @@ def show_ca_clients(db, ca_profile):
                     st.error(f"❌ Error: {str(e)}")
     
     st.markdown("</div>", unsafe_allow_html=True)
-    ClientProfile.ca_id == ca_profile.ca_id).all()
+
+def show_ca_clients(db, ca_profile):
+    st.markdown('<div class="main-card">', unsafe_allow_html=True)
+    
+    st.markdown("# 👥 My Clients")
+    st.markdown("---")
+    
+    clients = db.query(ClientProfile).filter(ClientProfile.ca_id == ca_profile.ca_id).all()
     
     # Invite code section
     st.markdown("### 🔗 Your Invite Code")
@@ -813,37 +812,38 @@ def show_ca_clients(db, ca_profile):
     if not clients:
         st.info("No clients yet. Share your invite code to get started!")
     else:
-        ```python
         for client in clients:
             user = db.query(User).filter(User.user_id == client.user_id).first()
             projects = db.query(AuditProject).filter(AuditProject.client_id == client.client_id).all()
-    
+            
             # Use container instead of expander to avoid text overlap
             st.markdown(f"""
             <div class="pbc-item-card">
                 <h3>🏢 {client.company_name}</h3>
             </div>
             """, unsafe_allow_html=True)
-     
+            
             col1, col2 = st.columns(2)
-    
+            
             with col1:
                 st.markdown(f"**Contact:** {user.full_name if user else 'N/A'}")
                 st.markdown(f"**Email:** {user.email if user else 'N/A'}")
                 st.markdown(f"**GSTIN:** {client.gstin or 'Not provided'}")
-    
+            
             with col2:
                 st.markdown(f"**Total Projects:** {len(projects)}")
                 active_projects = [p for p in projects if p.status == "Active"]
                 st.markdown(f"**Active Projects:** {len(active_projects)}")
                 st.markdown(f"**Joined:** {user.created_at.strftime('%d %b %Y') if user else 'N/A'}")
-    
+            
             if projects:
                 with st.expander("📂 View Recent Projects"):
                     for project in projects[:5]:
                         st.markdown(f"• **{project.project_name}** ({project.financial_year}) - {project.status}")
-    
+            
             st.markdown("<br>", unsafe_allow_html=True)
+    
+    st.markdown("</div>", unsafe_allow_html=True)
 
 def show_ca_settings(db, ca_profile):
     st.markdown('<div class="main-card">', unsafe_allow_html=True)
@@ -1190,7 +1190,7 @@ def display_pbc_items_for_client(db, pbc_items, filter_status):
                         else:
                             st.warning("⏳ Pending Review")
                     with col_doc3:
-                        pass  # Could add download button here
+                        pass
                     
                     # Show AI analysis if available
                     if doc.ai_analysis:
