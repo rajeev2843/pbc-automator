@@ -5,8 +5,12 @@ import PyPDF2
 import io
 from datetime import datetime, timedelta
 
-# Configure Gemini API
-GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "AIzaSyBxH6PDjSq1JhLYjlFOzf9jzOX45IIcCyk")
+# Configure Gemini API - Use centralized key
+try:
+    GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "AIzaSyBxH6PDjSq1JhLYjlFOzf9jzOX45IIcCyk")
+except:
+    GEMINI_API_KEY = "AIzaSyBxH6PDjSq1JhLYjlFOzf9jzOX45IIcCyk"
+
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-pro')
 
@@ -27,7 +31,7 @@ Key Account Categories Present:
     
     # Extract key accounts
     if 'Account Name' in tb_df.columns:
-        accounts = tb_df['Account Name'].tolist()[:50]  # First 50 accounts
+        accounts = tb_df['Account Name'].tolist()[:50]
         tb_summary += "\n".join([f"- {acc}" for acc in accounts[:20]])
     
     prompt = f"""
@@ -84,7 +88,6 @@ Generate at least 25-30 PBC items covering all material areas.
     
     except Exception as e:
         print(f"Gemini API Error: {str(e)}")
-        # Fallback: Return basic PBC list
         return get_fallback_pbc_list()
 
 def get_fallback_pbc_list():
@@ -109,7 +112,7 @@ def analyze_uploaded_document(file_bytes, filename, pbc_description):
         # Extract text from PDF
         pdf_reader = PyPDF2.PdfReader(io.BytesIO(file_bytes))
         text_content = ""
-        for page in pdf_reader.pages[:5]:  # First 5 pages
+        for page in pdf_reader.pages[:5]:
             text_content += page.extract_text()
         
         # Limit text length
