@@ -39,151 +39,6 @@ if 'current_page' not in st.session_state:
 # ============================================================================
 
 def show_landing_page():
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    
-    # Hero Section
-    col1, col2 = st.columns([3, 2])
-    
-    with col1:
-        st.markdown('<h1 class="hero-title">Smart Audit Room</h1>', unsafe_allow_html=True)
-        st.markdown("""
-        <h2 style='color: #6B7280; font-weight: 400; margin-bottom: 30px;'>
-        Automate Your PBC Process with AI
-        </h2>
-        <p style='font-size: 18px; color: #4B5563; line-height: 1.8; margin-bottom: 30px;'>
-        Transform your audit workflow with intelligent document management. 
-        Generate comprehensive PBC lists from Trial Balance in seconds, 
-        track submissions in real-time, and verify documents with AI-powered analysis.
-        </p>
-        """, unsafe_allow_html=True)
-        
-        col_btn1, col_btn2 = st.columns(2)
-        with col_btn1:
-            if st.button("🚀 Get Started", key="hero_signup", use_container_width=True):
-                st.session_state.current_page = "signup"
-                st.rerun()
-        with col_btn2:
-            if st.button("🔐 Sign In", key="hero_signin", use_container_width=True):
-                st.session_state.current_page = "signin"
-                st.rerun()
-    
-    with col2:
-        st.markdown("""
-        <div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                    padding: 40px; border-radius: 20px; color: white; text-align: center;'>
-            <div style='font-size: 64px; margin-bottom: 20px;'>📋</div>
-            <h3 style='color: white; margin-bottom: 15px;'>Built for CAs</h3>
-            <p style='font-size: 16px; opacity: 0.95;'>
-            Designed specifically for Chartered Accountants and their clients 
-            to streamline the audit documentation process.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("</div>", unsafe_allow_html=True)
-    
-    # Features Section
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    
-    st.markdown("<h2 style='text-align: center; margin-bottom: 40px;'>🌟 Powerful Features</h2>", unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="icon-large">🤖</div>
-            <h3>AI-Powered PBC Generation</h3>
-            <p style='color: #6B7280; line-height: 1.6;'>
-            Upload Trial Balance and get a comprehensive, intelligent PBC list 
-            in seconds using Google Gemini AI.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="icon-large">📄</div>
-            <h3>Smart Document Analysis</h3>
-            <p style='color: #6B7280; line-height: 1.6;'>
-            AI automatically analyzes uploaded documents, extracts key information, 
-            and verifies completeness.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col3:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="icon-large">📊</div>
-            <h3>Real-Time Progress Tracking</h3>
-            <p style='color: #6B7280; line-height: 1.6;'>
-            Monitor submission status with live dashboards. Get instant notifications 
-            and automated reminders.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="icon-large">👥</div>
-            <h3>Multi-Client Management</h3>
-            <p style='color: #6B7280; line-height: 1.6;'>
-            CAs can manage multiple clients from one dashboard. 
-            Clients only see their own projects.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="icon-large">🔒</div>
-            <h3>Secure & Compliant</h3>
-            <p style='color: #6B7280; line-height: 1.6;'>
-            Bank-grade security with audit trails. All actions logged 
-            for compliance and accountability.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col3:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="icon-large">⚡</div>
-            <h3>Lightning Fast</h3>
-            <p style='color: #6B7280; line-height: 1.6;'>
-            Save 10+ hours per audit. What took days now takes minutes 
-            with intelligent automation.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("</div>", unsafe_allow_html=True)
-    
-    # How It Works
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    
-    st.markdown("<h2 style='text-align: center; margin-bottom: 40px;'>🔄 How It Works</h2>", unsafe_allow_html=True)
-    
-    col1, col2 = st.columns([1, 1])
-    
-    with col1:
-        st.markdown("""
-        <div style='background: #F9FAFB; padding: 30px; border-radius: 15px; margin-bottom: 20px;'>
-            <h3 style='color: #6366F1;'>👨‍💼 For CAs</h3>
-            <ol style='line-height: 2; color: #4B5563; font-size: 16px;'>
-                <li>Create audit project for your client</li>
-                <li>Upload Trial Balance (Excel/CSV)</li>
-def show_landing_page():
     # Hero Section - NO wrapper div
     col1, col2 = st.columns([3, 2])
     
@@ -327,6 +182,62 @@ def show_landing_page():
                 <li>Create audit project for your client</li>
                 <li>Upload Trial Balance (Excel/CSV)</li>
                 <li>AI generates comprehensive PBC list</li>
+                <li>Review, customize, and assign to client</li>
+                <li>Track progress and verify documents</li>
+            </ol>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div style='background: linear-gradient(135deg, rgba(12, 45, 72, 0.9), rgba(12, 74, 110, 0.9)); 
+                    padding: 30px; border-radius: 15px; margin-bottom: 20px;
+                    border: 2px solid rgba(20, 184, 166, 0.4);
+                    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+                    backdrop-filter: blur(10px);'>
+            <h3 style='color: #5EEAD4; text-shadow: 0 2px 4px rgba(0,0,0,0.3);'>🏢 For Clients</h3>
+            <ol style='line-height: 2; color: #BAE6FD; font-size: 16px; text-shadow: 0 1px 2px rgba(0,0,0,0.2);'>
+                <li>Receive PBC list from your CA</li>
+                <li>See exactly what's needed and why</li>
+                <li>Upload documents with drag-and-drop</li>
+                <li>AI analyzes and confirms completeness</li>
+                <li>Get real-time feedback from CA</li>
+            </ol>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # CTA Section - NO wrapper div
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("""
+    <div style='background: linear-gradient(135deg, #0EA5E9 0%, #06B6D4 50%, #14B8A6 100%); 
+                text-align: center; padding: 60px; border-radius: 20px;
+                box-shadow: 0 12px 40px rgba(6, 182, 212, 0.5);
+                border: 2px solid rgba(94, 234, 212, 0.4);'>
+        <h2 style='color: white; font-size: 36px; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);'>
+        Ready to Transform Your Audit Process?
+        </h2>
+        <p style='color: white; font-size: 18px; opacity: 0.95; margin-bottom: 30px; text-shadow: 0 1px 2px rgba(0,0,0,0.2);'>
+        Join forward-thinking CAs who've already automated their PBC workflow
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        if st.button("🎯 Start Free Today", key="cta_button", use_container_width=True):
+            st.session_state.current_page = "signup"
+            st.rerun()
+    
+    # Footer
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("""
+    <div style='text-align: center; color: #7DD3FC; padding: 20px;'>
+        <p style='font-size: 14px; opacity: 0.8;'>
+        Built for ICAI Aurathon 2025 | Powered by Google Gemini AI
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
 
 
 # ============================================================================
