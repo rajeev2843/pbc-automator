@@ -35,6 +35,24 @@ def apply_custom_styling():
             font-family: 'Inter', sans-serif !important;
         }
         
+        /* CRITICAL FIX: Hide keyboard_arrow text completely */
+        button[kind="header"] {
+            display: none !important;
+        }
+        
+        [data-testid="collapsedControl"] {
+            display: none !important;
+        }
+        
+        .css-1dp5vir {
+            display: none !important;
+        }
+        
+        /* Hide any element containing "keyboard" text */
+        *:contains("keyboard") {
+            display: none !important;
+        }
+        
         /* Main app background - dark navy blue */
         .main {
             background: linear-gradient(135deg, #0A0E27 0%, #141B3D 100%);
@@ -45,19 +63,28 @@ def apply_custom_styling():
             background: linear-gradient(135deg, #0A0E27 0%, #141B3D 100%);
         }
         
-        /* Sidebar - slightly lighter navy */
+        /* Remove any white/light background containers */
+        .element-container {
+            background: transparent !important;
+        }
+        
+        .stMarkdown {
+            background: transparent !important;
+        }
+        
+        /* Sidebar - dark navy */
         [data-testid="stSidebar"] {
-            background: #141B3D;
+            background: #141B3D !important;
             border-right: 1px solid #1E293B;
         }
         
         [data-testid="stSidebar"] > div:first-child {
-            background: #141B3D;
+            background: #141B3D !important;
         }
         
-        /* Hide sidebar collapse control text */
-        button[kind="header"] {
-            display: none;
+        /* Disable sidebar drag to expand */
+        [data-testid="stSidebar"] [data-testid="stSidebarCollapseButton"] {
+            pointer-events: none !important;
         }
         
         /* Sidebar text colors */
@@ -65,42 +92,62 @@ def apply_custom_styling():
             color: #E2E8F0 !important;
         }
         
-        [data-testid="stSidebar"] .stMarkdown {
+        [data-testid="stSidebar"] h1,
+        [data-testid="stSidebar"] h2,
+        [data-testid="stSidebar"] h3,
+        [data-testid="stSidebar"] p,
+        [data-testid="stSidebar"] span,
+        [data-testid="stSidebar"] div {
             color: #E2E8F0 !important;
         }
         
-        /* Remove radio button circles completely */
-        [data-testid="stSidebar"] .row-widget.stRadio > div {
-            gap: 4px;
-            flex-direction: column;
-        }
-        
-        [data-testid="stSidebar"] .row-widget.stRadio > div > label {
-            background: transparent !important;
-            padding: 12px 16px !important;
-            border-radius: 8px !important;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none !important;
-            font-weight: 500 !important;
-            margin-bottom: 4px;
-            display: flex !important;
-            align-items: center;
-        }
-        
-        /* Hide the radio circle completely */
+        /* CRITICAL: Remove ALL radio button circles */
         [data-testid="stSidebar"] .row-widget.stRadio > div > label > div:first-child {
             display: none !important;
             width: 0 !important;
             height: 0 !important;
             margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        [data-testid="stSidebar"] .row-widget.stRadio > div > label > div[data-testid="stMarkdownContainer"] {
+            margin-left: 0 !important;
+            padding-left: 0 !important;
+        }
+        
+        /* Radio buttons - remove circles everywhere */
+        input[type="radio"] {
+            display: none !important;
+        }
+        
+        .row-widget.stRadio > div > label > div:first-child {
+            display: none !important;
+        }
+        
+        /* Sidebar navigation styling */
+        [data-testid="stSidebar"] .row-widget.stRadio > div {
+            gap: 0px;
+            flex-direction: column;
+        }
+        
+        [data-testid="stSidebar"] .row-widget.stRadio > div > label {
+            background: transparent !important;
+            padding: 14px 20px !important;
+            border-radius: 8px !important;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none !important;
+            font-weight: 500 !important;
+            margin-bottom: 6px;
+            border-left: 3px solid transparent !important;
         }
         
         [data-testid="stSidebar"] .row-widget.stRadio > div > label:hover {
             background: rgba(99, 102, 241, 0.15) !important;
+            border-left: 3px solid #6366F1 !important;
         }
         
-        /* Active sidebar item - bold and underlined */
+        /* Active sidebar item - BOLD and UNDERLINED */
         [data-testid="stSidebar"] .row-widget.stRadio > div > label[data-checked="true"] {
             background: rgba(99, 102, 241, 0.25) !important;
             font-weight: 700 !important;
@@ -112,20 +159,19 @@ def apply_custom_styling():
             text-decoration: underline;
             text-decoration-color: #6366F1;
             text-decoration-thickness: 2px;
+            text-underline-offset: 4px;
         }
         
-        /* Main content cards - dark with blue accents */
+        /* Main content cards */
         .main-card {
-            background: #141B3D;
+            background: transparent !important;
             border-radius: 16px;
             padding: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             margin: 20px auto;
             max-width: 1200px;
-            border: 1px solid #1E293B;
         }
         
-        /* All text should be light colored */
+        /* Text colors - light on dark */
         h1, h2, h3, h4, h5, h6 {
             color: #E2E8F0 !important;
         }
@@ -152,7 +198,7 @@ def apply_custom_styling():
             box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6) !important;
         }
         
-        /* Metric cards */
+        /* Metric cards - clickable with pointer */
         .metric-card {
             background: linear-gradient(135deg, #1E40AF 0%, #7C3AED 100%);
             color: white !important;
@@ -161,6 +207,13 @@ def apply_custom_styling():
             box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
             margin-bottom: 20px;
             border: 1px solid rgba(99, 102, 241, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
         }
         
         .metric-card * {
@@ -261,7 +314,7 @@ def apply_custom_styling():
             outline: none !important;
         }
         
-        /* Select boxes */
+        /* CRITICAL FIX: Dropdowns with visible text */
         .stSelectbox > div > div {
             background: #1E293B !important;
             color: #E2E8F0 !important;
@@ -279,7 +332,16 @@ def apply_custom_styling():
             border-color: #6366F1 !important;
         }
         
-        /* Dropdown menu */
+        /* Dropdown selected text - MUST BE VISIBLE */
+        .stSelectbox [data-baseweb="select"] span {
+            color: #E2E8F0 !important;
+        }
+        
+        .stSelectbox input {
+            color: #E2E8F0 !important;
+        }
+        
+        /* Dropdown menu options */
         [data-baseweb="popover"] {
             background: #1E293B !important;
         }
@@ -487,28 +549,6 @@ def apply_custom_styling():
             background: #1E293B !important;
             border-left: 4px solid #6366F1 !important;
             color: #E2E8F0 !important;
-        }
-        
-        /* Radio buttons in forms */
-        .row-widget.stRadio > div {
-            flex-direction: row !important;
-            gap: 20px;
-        }
-        
-        .row-widget.stRadio > div > label {
-            background: #1E293B !important;
-            padding: 12px 20px !important;
-            border-radius: 8px !important;
-            border: 2px solid #334155 !important;
-        }
-        
-        .row-widget.stRadio > div > label:hover {
-            border-color: #6366F1 !important;
-        }
-        
-        .row-widget.stRadio > div > label[data-checked="true"] {
-            border-color: #6366F1 !important;
-            background: rgba(99, 102, 241, 0.2) !important;
         }
         
         </style>
