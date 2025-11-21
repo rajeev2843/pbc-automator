@@ -34,6 +34,7 @@ if 'role' not in st.session_state:
 if 'current_page' not in st.session_state:
     st.session_state.current_page = "landing"
 
+
 # ============================================================================
 # LANDING PAGE
 # ============================================================================
@@ -54,7 +55,7 @@ def show_landing_page():
         </p>
         """, unsafe_allow_html=True)
         
-        # Buttons with deep blue text
+        # Buttons
         col_btn1, col_btn2 = st.columns(2)
         with col_btn1:
             if st.button("🚀 Get Started", key="hero_signup", use_container_width=True):
@@ -66,7 +67,7 @@ def show_landing_page():
                 st.rerun()
     
     with col2:
-        # UPDATED: Added !important to the color in the paragraph below
+        # UPDATED: Wrapped text in span with specific color
         st.markdown("""
         <div style='background: linear-gradient(135deg, #0EA5E9 0%, #06B6D4 50%, #14B8A6 100%); 
                     padding: 40px; border-radius: 20px; text-align: center;
@@ -74,9 +75,8 @@ def show_landing_page():
                     border: 2px solid rgba(94, 234, 212, 0.3);'>
             <div style='font-size: 64px; margin-bottom: 20px;'>📋</div>
             <h3 style='color: white; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); font-weight: 700;'>Built for CAs</h3>
-            <p style='font-size: 16px; color: #0A1929 !important; font-weight: 600; line-height: 1.6;'>
-            Designed specifically for Chartered Accountants and their clients 
-            to streamline the audit documentation process.
+            <p style='font-size: 16px; font-weight: 600; line-height: 1.6;'>
+                <span style='color: #0A1929 !important;'>Designed specifically for Chartered Accountants and their clients to streamline the audit documentation process.</span>
             </p>
         </div>
         """, unsafe_allow_html=True)
@@ -210,7 +210,7 @@ def show_landing_page():
     # CTA Section with gap
     st.markdown("<br><br>", unsafe_allow_html=True)
     
-    # UPDATED: Added !important to the color in the paragraph below
+    # UPDATED: Wrapped text in span with specific color
     st.markdown("""
     <div style='background: linear-gradient(135deg, #0EA5E9 0%, #06B6D4 50%, #14B8A6 100%); 
                 text-align: center; padding: 60px; border-radius: 20px;
@@ -219,8 +219,8 @@ def show_landing_page():
         <h2 style='color: white; font-size: 36px; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); font-weight: 700;'>
         Ready to Transform Your Audit Process?
         </h2>
-        <p style='color: #0A1929 !important; font-size: 18px; font-weight: 600; margin-bottom: 0; line-height: 1.6;'>
-        Join forward-thinking CAs who've already automated their PBC workflow
+        <p style='font-size: 18px; font-weight: 600; margin-bottom: 0; line-height: 1.6;'>
+            <span style='color: #0A1929 !important;'>Join forward-thinking CAs who've already automated their PBC workflow</span>
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -243,17 +243,7 @@ def show_landing_page():
         </p>
     </div>
     """, unsafe_allow_html=True)
-
-# [Keep the rest of the file exactly as it was (show_signup_page, show_signin_page, etc.)]
-# For brevity I am not re-printing the entire file here, but ensure you keep 
-# the rest of the functions from your original main.py intact.
-# Just replace the show_landing_page function with the one above.
-# Also include the imports and config at the top.
-                    
-
-
-
-
+    
 
 
 # ============================================================================
