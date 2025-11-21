@@ -154,38 +154,40 @@ def apply_custom_styling():
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         
-        /* NOTE: This global rule is what was overriding your aqua block text. 
-           We kept this, but used !important in main.py to override it specifically there. */
         p, span, div, label, li {
             color: #BAE6FD !important;
         }
         
-        /* Buttons - Ocean gradient with glow */
-        /* UPDATED: Changed text color to #0A1929 (Deep Blue) for readability */
+        /* --- BUTTON FIX --- */
+        /* Explicitly target the button text color to be Dark Blue (#0A1929) */
         .stButton > button {
             background: linear-gradient(135deg, #0EA5E9 0%, #06B6D4 50%, #14B8A6 100%) !important;
-            color: #0A1929 !important;  /* CHANGED FROM WHITE TO DEEP BLUE */
+            color: #0A1929 !important; 
             border: none !important;
             border-radius: 12px !important;
             padding: 14px 28px !important;
-            font-weight: 700 !important; /* Made slightly bolder */
+            font-weight: 700 !important;
             font-size: 16px !important;
             transition: all 0.3s ease !important;
             box-shadow: 0 4px 20px rgba(6, 182, 212, 0.4) !important;
-            text-shadow: none !important; /* Removed shadow for cleaner dark text */
+            text-shadow: none !important; /* Removed shadow to make dark text crisp */
+        }
+        
+        /* Ensure text inside button is also dark blue (sometimes Streamlit wraps in p) */
+        .stButton > button p {
+            color: #0A1929 !important;
         }
         
         .stButton > button:hover {
             transform: translateY(-3px) !important;
             box-shadow: 0 8px 30px rgba(6, 182, 212, 0.6) !important;
             background: linear-gradient(135deg, #38BDF8 0%, #0EA5E9 50%, #06B6D4 100%) !important;
-            color: #000000 !important; /* Even darker on hover */
         }
         
         /* Metric cards - Aqua gradient */
         .metric-card {
             background: linear-gradient(135deg, #0EA5E9 0%, #06B6D4 50%, #14B8A6 100%);
-            color: white !important;
+            color: #0A1929 !important; /* Dark text for metric cards */
             padding: 28px;
             border-radius: 16px;
             box-shadow: 0 8px 25px rgba(6, 182, 212, 0.4);
@@ -202,7 +204,7 @@ def apply_custom_styling():
         }
         
         .metric-card * {
-            color: #0A1929 !important; /* Changed metric card text to dark for readability too */
+            color: #0A1929 !important; /* Force all children (icons, numbers) to be dark */
             text-shadow: none !important;
         }
         
