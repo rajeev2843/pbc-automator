@@ -37,9 +37,8 @@ if 'current_page' not in st.session_state:
 # ============================================================================
 # LANDING PAGE
 # ============================================================================
-
 def show_landing_page():
-    # Hero Section - NO wrapper div
+    # Hero Section
     col1, col2 = st.columns([3, 2])
     
     with col1:
@@ -53,6 +52,31 @@ def show_landing_page():
         Generate comprehensive PBC lists from Trial Balance in seconds, 
         track submissions in real-time, and verify documents with AI-powered analysis.
         </p>
+        """, unsafe_allow_html=True)
+        
+        # Buttons with deep blue text
+        st.markdown("""
+        <style>
+        .hero-button {
+            background: linear-gradient(135deg, #0EA5E9 0%, #06B6D4 50%, #14B8A6 100%) !important;
+            color: #0A1929 !important;
+            border: none !important;
+            border-radius: 12px !important;
+            padding: 14px 28px !important;
+            font-weight: 700 !important;
+            font-size: 16px !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 20px rgba(6, 182, 212, 0.4) !important;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            display: inline-block;
+        }
+        .hero-button:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 8px 30px rgba(6, 182, 212, 0.6) !important;
+        }
+        </style>
         """, unsafe_allow_html=True)
         
         col_btn1, col_btn2 = st.columns(2)
@@ -72,15 +96,15 @@ def show_landing_page():
                     box-shadow: 0 8px 30px rgba(6, 182, 212, 0.4);
                     border: 2px solid rgba(94, 234, 212, 0.3);'>
             <div style='font-size: 64px; margin-bottom: 20px;'>📋</div>
-            <h3 style='color: white; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);'>Built for CAs</h3>
-            <p style='font-size: 16px; opacity: 0.95; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.2);'>
+            <h3 style='color: white; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); font-weight: 700;'>Built for CAs</h3>
+            <p style='font-size: 16px; color: #0A1929; font-weight: 600; line-height: 1.6;'>
             Designed specifically for Chartered Accountants and their clients 
             to streamline the audit documentation process.
             </p>
         </div>
         """, unsafe_allow_html=True)
     
-    # Features Section - NO wrapper div, direct content
+    # Features Section
     st.markdown("<br><br>", unsafe_allow_html=True)
     
     st.markdown("<h2 style='text-align: center; margin-bottom: 40px; color: #E0F2FE; text-shadow: 0 2px 4px rgba(0,0,0,0.3);'>🌟 Powerful Features</h2>", unsafe_allow_html=True)
@@ -163,7 +187,7 @@ def show_landing_page():
         </div>
         """, unsafe_allow_html=True)
     
-    # How It Works - NO wrapper div
+    # How It Works
     st.markdown("<br><br>", unsafe_allow_html=True)
     
     st.markdown("<h2 style='text-align: center; margin-bottom: 40px; color: #E0F2FE; text-shadow: 0 2px 4px rgba(0,0,0,0.3);'>🔄 How It Works</h2>", unsafe_allow_html=True)
@@ -206,21 +230,24 @@ def show_landing_page():
         </div>
         """, unsafe_allow_html=True)
     
-    # CTA Section - NO wrapper div
+    # CTA Section with gap
     st.markdown("<br><br>", unsafe_allow_html=True)
     st.markdown("""
     <div style='background: linear-gradient(135deg, #0EA5E9 0%, #06B6D4 50%, #14B8A6 100%); 
                 text-align: center; padding: 60px; border-radius: 20px;
                 box-shadow: 0 12px 40px rgba(6, 182, 212, 0.5);
                 border: 2px solid rgba(94, 234, 212, 0.4);'>
-        <h2 style='color: white; font-size: 36px; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);'>
+        <h2 style='color: white; font-size: 36px; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); font-weight: 700;'>
         Ready to Transform Your Audit Process?
         </h2>
-        <p style='color: white; font-size: 18px; opacity: 0.95; margin-bottom: 30px; text-shadow: 0 1px 2px rgba(0,0,0,0.2);'>
+        <p style='color: #0A1929; font-size: 18px; font-weight: 600; margin-bottom: 0; line-height: 1.6;'>
         Join forward-thinking CAs who've already automated their PBC workflow
         </p>
     </div>
     """, unsafe_allow_html=True)
+    
+    # Gap between card and button
+    st.markdown("<br>", unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
@@ -237,6 +264,8 @@ def show_landing_page():
         </p>
     </div>
     """, unsafe_allow_html=True)
+
+
 
 
 
