@@ -518,6 +518,15 @@ def apply_custom_styling():
             margin: 24px 0;
         }
         
+        /* Hero buttons with dark text */
+        .stButton > button[key="hero_signup"],
+        .stButton > button[key="hero_signin"],
+        .stButton > button[key="cta_button"] {
+            background: linear-gradient(135deg, #0EA5E9 0%, #06B6D4 50%, #14B8A6 100%) !important;
+            color: #0A1929 !important;
+            font-weight: 700 !important;
+        }
+        
         </style>
     """, unsafe_allow_html=True)
 
