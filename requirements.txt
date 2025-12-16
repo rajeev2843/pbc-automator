@@ -9,3 +9,5 @@ bcrypt
 pillow
 streamlit-option-menu
 plotly
+rapidfuzz
+numpy
